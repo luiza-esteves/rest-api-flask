@@ -1,8 +1,9 @@
-from flask import Flask, jsonify
+from flask import Flask
 from flask_restful import Resource, Api
 from flask_mongoengine import MongoEngine
 
 app = Flask(__name__)
+
 app.config["MONGODB_SETTINGS"] = [
     {
         "db": "users",
@@ -17,7 +18,7 @@ db = MongoEngine(app)
 
 
 class UserModel(db.Document):
-    cpf= db.StringField(required=True, unique=True)
+    cpf = db.StringField(required=True, unique=True)
     first_name = db.StringField(required=True)
     last_name = db.StringField(required=True)
     email = db.EmailField(required=True)
