@@ -57,7 +57,7 @@ class UserModel(db.Document):
 
 class Users(Resource):
     def get(self):
-        return {'message': 'user 7'}
+        return jsonify(UserModel.objects())
 
 
 class User(Resource):
@@ -92,7 +92,12 @@ class User(Resource):
         return True
     
     def get(self, cpf):
-        return {'msessage': 'cpf'}
+        response = UserModel.objects(cpf=cpf)
+
+        if response:
+            return jsonify(response)
+
+        return {"message": "User does not exist in database!"}, 400
     
     def post(self):
         data = _user_parser.parse_args()
