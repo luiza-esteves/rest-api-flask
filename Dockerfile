@@ -14,9 +14,11 @@ COPY requirements.txt .
 
 RUN pip install -r requirements.txt
 
-COPY app.py .
+COPY wsgi.py .
+COPY config.py .
+COPY application application
 
-CMD ["python", "app.py"]
+CMD [ "python", "wsgi.py" ]
 
 # dar build: docker build -t restapi:0.1 .
 # rodar container: docker run -P restapi:0.1
