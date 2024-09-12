@@ -1,10 +1,8 @@
 from flask import jsonify
-from flask_restful import Resource, reqparse,Api
+from flask_restful import Resource, reqparse
 from mongoengine import NotUniqueError
 from .model import UserModel
-
 import re
-
 
 _user_parser = reqparse.RequestParser()
 _user_parser.add_argument('first_name',
@@ -40,7 +38,7 @@ class Users(Resource):
 
 
 class User(Resource):
-    
+
     def validate_cpf(self, cpf):
 
         # Has the correct mask?
@@ -69,15 +67,7 @@ class User(Resource):
             return False
 
         return True
-    
-    def get(self, cpf):
-        response = UserModel.objects(cpf=cpf)
 
-        if response:
-            return jsonify(response)
-
-        return {"message": "User does not exist in database!"}, 400
-    
     def post(self):
         data = _user_parser.parse_args()
 
@@ -90,3 +80,10 @@ class User(Resource):
         except NotUniqueError:
             return {"message": "CPF already exists in database!"}, 400
 
+    def get(self, cpf):
+        response = UserModel.objects(cpf=cpf)
+
+        if response:
+            return jsonify(response)
+
+        return {"message": "User does not exist in database!"}, 400
